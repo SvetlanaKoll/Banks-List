@@ -6,11 +6,11 @@ export default class CalculateMortgage extends Component {
     super(props);
 
     this.state = {
-      bank_names: [],
+      banks: [],
       name_chosen: "",
-      interest_rate: "",
       initial_loan: "",
       down_payment: "",
+      monthly_payments: "",
       result: null,
     };
   }
@@ -19,9 +19,9 @@ export default class CalculateMortgage extends Component {
       .get("http://localhost:4000/banks")
       .then((res) => {
         if (res.data.data.banks) {
-          this.setState({ bank_names: res.data.data.banks });
+          this.setState({ banks: res.data.data.banks });
         } else {
-          this.setState({ bank_names: [] });
+          this.setState({ banks: [] });
         }
       })
       .catch(function (err) {
@@ -30,7 +30,7 @@ export default class CalculateMortgage extends Component {
   }
 
   bankNames() {
-    return this.state.bank_names.map(function (el, i) {
+    return this.state.banks.map(function (el, i) {
       return <option>{el.bank_name}</option>;
     });
   }
@@ -51,18 +51,41 @@ export default class CalculateMortgage extends Component {
       down_payment: e.target.value,
     });
   }
-  calculateMortgage() {
+  onChangeMonthlyPayments(e) {
     this.setState({
-      result: 123,
+      monthly_payments: e.target.value,
     });
   }
+  calculateMortgage() {
+    const allBanks = this.state.banks
+    const nameChosen = this.state.name_chosen
+    const bankChosen = allBanks.find( obj => {
+      console.log(allBanks);
 
+      return obj.bank_name === nameChosen
+     
+
+    });
+    console.log(bankChosen);
+    if(!bankChosen) return;
+    let P = parseInt(this.state.initial_loan);
+    let r = bankChosen.interest_rate;
+    let n = parseInt(this.monthly_payments);
+    console.log(r)
+    
+    let calculatedMortgage =
+      (P * (r / 12) * Math.pow(1 + r / 12, n)) / (Math.pow(1 + r / 12, n) - 1);
+    
+    this.setState({
+      result: calculatedMortgage,
+    });
+  }
 
   render() {
     return (
       <div style={{ marginTop: 10 }}>
         <h3>Calculate Mortgage</h3>
-        <div >
+        <div>
           <div className="form-group">
             <label for="name">Select Name</label>
             <select
@@ -76,19 +99,34 @@ export default class CalculateMortgage extends Component {
           <div className="form-group">
             <label>Initial Loan: </label>
             <input
-              type="text"
+              type="number"
+              min="1000"
+              step="100"
               className="form-control"
               value={this.state.initial_loan}
-              onChange={this.onChangeInitialLoan}
+              onChange={this.onChangeInitialLoan.bind(this)}
             />
           </div>
           <div className="form-group">
             <label>Down Payment: </label>
             <input
-              type="text"
+              type="number"
+              min="100"
+              step="100"
               className="form-control"
               value={this.state.down_payment}
-              onChange={this.onChangeDownPayment}
+              onChange={this.onChangeDownPayment.bind(this)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Number of monthly payments: </label>
+            <input
+              type="number"
+              min="1"
+              max="15"
+              className="form-control"
+              value={this.state.monthly_payments}
+              onChange={this.onChangeMonthlyPayments.bind(this)}
             />
           </div>
 

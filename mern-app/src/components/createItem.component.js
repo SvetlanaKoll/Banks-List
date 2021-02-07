@@ -59,14 +59,7 @@ export default class CreateItem extends Component {
     ) {
       isError = true;
     }
-    if (
-      newBank.bank_name  ||
-      !newBank.interest_rate.trim() ||
-      !newBank.maximum_loan.trim() ||
-      !newBank.maximum_down_payment.trim()
-    ) {
-      isError = true;
-    }
+    
     if(isError){
     alert('Make sure you have entered all the data!')
     } else{
@@ -109,7 +102,9 @@ export default class CreateItem extends Component {
           <div className="form-group">
             <label>Maximum loan: </label>
             <input
-              type="text"
+              type="number"
+              min="1000"
+              step="1000"
               className="form-control"
               value={this.state.maximum_loan}
               onChange={this.onChangeMaximumLoan}
@@ -118,7 +113,9 @@ export default class CreateItem extends Component {
           <div className="form-group">
             <label>Maximum Down Payment: </label>
             <input
-              type="text"
+              type="number"
+              min="100"
+              step="100"
               className="form-control"
               value={this.state.maximum_down_payment}
               onChange={this.onChangeMaximumDownPayment}

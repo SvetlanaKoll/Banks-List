@@ -39,7 +39,6 @@ exports.getBank = async (req, res) => {
     })
   }
 };
-<<<<<<< HEAD
 exports.getBankByName = async (req, res) => {
   try{
     const bank = await Bank.find({})
@@ -57,8 +56,6 @@ exports.getBankByName = async (req, res) => {
     })
   }
 };
-=======
->>>>>>> dd805b7c73001a4f4757df3ba28085043a491292
 exports.createBank = async (req, res) => {
   try {
     const newBank = await Bank.create(req.body);
@@ -95,7 +92,6 @@ exports.updateBank = async (req, res) => {
       message: notUpdated
     })
   }
-<<<<<<< HEAD
 };
 exports.deleteBank = async (req, res) => {
   try{
@@ -110,6 +106,4 @@ exports.deleteBank = async (req, res) => {
       message: err
     })
   }
-=======
->>>>>>> dd805b7c73001a4f4757df3ba28085043a491292
 };
