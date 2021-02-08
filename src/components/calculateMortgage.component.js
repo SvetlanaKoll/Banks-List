@@ -16,7 +16,7 @@ export default class CalculateMortgage extends Component {
   }
   componentDidMount() {
     axios
-      .get("http://localhost:4000/banks")
+      .get("/banks")
       .then((res) => {
         if (res.data.data.banks) {
           this.setState({ banks: res.data.data.banks });
@@ -124,7 +124,7 @@ export default class CalculateMortgage extends Component {
             <input
               type="number"
               min="2"
-              
+
               className="form-control"
               value={this.state.monthly_payments}
               onChange={this.onChangeMonthlyPayments.bind(this)}
