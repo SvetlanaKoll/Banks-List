@@ -20,6 +20,7 @@ export default class CalculateMortgage extends Component {
       .then((res) => {
         if (res.data.data.banks) {
           this.setState({ banks: res.data.data.banks });
+          this.setState({ name_chosen: res.data.data.banks[0].bank_name });
         } else {
           this.setState({ banks: [] });
         }
@@ -57,25 +58,26 @@ export default class CalculateMortgage extends Component {
     });
   }
   calculateMortgage() {
-    const allBanks = this.state.banks
-    const nameChosen = this.state.name_chosen
-    const bankChosen = allBanks.find( obj => {
-      console.log(allBanks);
-
-      return obj.bank_name === nameChosen
-     
-
+    const allBanks = this.state.banks;
+    const nameChosen = this.state.name_chosen;
+    const bankChosen = allBanks.find((obj) => {
+      return obj.bank_name === nameChosen;
     });
-    console.log(bankChosen);
-    if(!bankChosen) return;
+
+    if (
+      !this.state.name_chosen.trim() ||
+      !this.state.initial_loan.trim() ||
+      !this.state.monthly_payments.trim()
+    ) {
+      alert("Make sure that all fields are filled");
+    }
     let P = parseInt(this.state.initial_loan);
     let r = bankChosen.interest_rate;
-    let n = parseInt(this.monthly_payments);
-    console.log(r)
-    
+    let n = parseInt(this.state.monthly_payments);
+
     let calculatedMortgage =
       (P * (r / 12) * Math.pow(1 + r / 12, n)) / (Math.pow(1 + r / 12, n) - 1);
-    
+
     this.setState({
       result: calculatedMortgage,
     });
@@ -100,7 +102,7 @@ export default class CalculateMortgage extends Component {
             <label>Initial Loan: </label>
             <input
               type="number"
-              min="1000"
+              min="500"
               step="100"
               className="form-control"
               value={this.state.initial_loan}
@@ -111,8 +113,7 @@ export default class CalculateMortgage extends Component {
             <label>Down Payment: </label>
             <input
               type="number"
-              min="100"
-              step="100"
+              min="50"
               className="form-control"
               value={this.state.down_payment}
               onChange={this.onChangeDownPayment.bind(this)}
@@ -143,7 +144,7 @@ export default class CalculateMortgage extends Component {
         <div class="card">
           {this.state.result && (
             <div class="card-body">
-              Your monthly mortgage is: {this.state.result}
+              Your monthly mortgage is: {this.state.result}$
             </div>
           )}
         </div>

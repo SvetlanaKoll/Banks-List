@@ -22,9 +22,9 @@ class Bank extends Component{
     return(
       <tr>
       <td>{this.props.bank.bank_name}</td>
-      <td>{this.props.bank.interest_rate}</td>
+      <td>{this.props.bank.interest_rate}%</td>
       <td>{this.props.bank.maximum_loan}</td>
-      <td>{this.props.bank.maximum_down_payment}</td>
+      <td>{this.props.bank.maximum_down_payment}%</td>
       <td>
         <button type="button" className="btn btn-info">
           <Link style={{ color: "#44014C", textDecoration: "none" }} to={"/edit/" + this.props.bank._id}>

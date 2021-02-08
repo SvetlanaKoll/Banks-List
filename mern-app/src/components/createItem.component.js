@@ -59,21 +59,20 @@ export default class CreateItem extends Component {
     ) {
       isError = true;
     }
-    
-    if(isError){
-    alert('Make sure you have entered all the data!')
-    } else{
+
+    if (isError) {
+      alert("Make sure you have entered all the data!");
+    } else {
       axios
         .post("http://localhost:4000/banks", newBank)
         .then((res) => console.log(res.data));
-  
+
       this.setState({
         bank_name: "",
         interest_rate: "",
         maximum_loan: "",
         maximum_down_payment: "",
       });
-
     }
   }
   render() {
@@ -93,7 +92,9 @@ export default class CreateItem extends Component {
           <div className="form-group">
             <label>Interest Rate: </label>
             <input
-              type="text"
+              type="number"
+              min="1"
+              step="1"
               className="form-control"
               value={this.state.interest_rate}
               onChange={this.onChangeInterestRate}
@@ -104,7 +105,6 @@ export default class CreateItem extends Component {
             <input
               type="number"
               min="1000"
-              step="1000"
               className="form-control"
               value={this.state.maximum_loan}
               onChange={this.onChangeMaximumLoan}
@@ -114,8 +114,8 @@ export default class CreateItem extends Component {
             <label>Maximum Down Payment: </label>
             <input
               type="number"
-              min="100"
-              step="100"
+              min="1"
+              
               className="form-control"
               value={this.state.maximum_down_payment}
               onChange={this.onChangeMaximumDownPayment}
