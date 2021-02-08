@@ -72,7 +72,7 @@ export default class CalculateMortgage extends Component {
       alert("Make sure that all fields are filled");
     }
     let P = parseInt(this.state.initial_loan);
-    let r = bankChosen.interest_rate;
+    let r = (bankChosen.interest_rate) / 100;
     let n = parseInt(this.state.monthly_payments);
 
     let calculatedMortgage =
@@ -123,8 +123,8 @@ export default class CalculateMortgage extends Component {
             <label>Number of monthly payments: </label>
             <input
               type="number"
-              min="1"
-              max="15"
+              min="2"
+              
               className="form-control"
               value={this.state.monthly_payments}
               onChange={this.onChangeMonthlyPayments.bind(this)}
@@ -144,7 +144,7 @@ export default class CalculateMortgage extends Component {
         <div class="card">
           {this.state.result && (
             <div class="card-body">
-              Your monthly mortgage is: {this.state.result}$
+              Your monthly mortgage is: {this.state.result.toFixed(2)}$
             </div>
           )}
         </div>
